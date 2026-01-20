@@ -1,0 +1,22 @@
+node_modules/
+dist/
+*.log
+.env
+.env.local
+
+# Output directories
+reports/
+screenshots/
+*.mp4
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+playwright/.auth/
+test-results/

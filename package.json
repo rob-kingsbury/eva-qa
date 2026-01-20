@@ -1,0 +1,56 @@
+{
+  "name": "ui-explorer",
+  "version": "0.1.0",
+  "description": "Exhaustive UI exploration testing tool with accessibility and responsive validation",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ui-explorer": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli.js",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "testing",
+    "e2e",
+    "accessibility",
+    "wcag",
+    "playwright",
+    "crawler",
+    "state-machine",
+    "ui-testing",
+    "responsive",
+    "automation"
+  ],
+  "author": "Rob Kingsbury",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rob-kingsbury/ui-explorer.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "@supabase/supabase-js": "^2.91.0",
+    "axe-core": "^4.10.0",
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "playwright": "^1.49.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
