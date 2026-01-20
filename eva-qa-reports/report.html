@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVA Report</title>
+  <style>
+    :root {
+      --bg: #0f0f10;
+      --surface: #1a1a1d;
+      --text: #e4e4e7;
+      --text-muted: #71717a;
+      --primary: #3b82f6;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border: #27272a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.125rem; margin: 2rem 0 1rem; color: var(--text-muted); }
+    .meta { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2rem; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .stat {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .stat-value { font-size: 1.75rem; font-weight: 600; }
+    .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+    .stat.success .stat-value { color: var(--success); }
+    .stat.warning .stat-value { color: var(--warning); }
+    .stat.danger .stat-value { color: var(--danger); }
+    .issues { margin-top: 1rem; }
+    .issue {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      border-left: 3px solid var(--border);
+    }
+    .issue.critical { border-left-color: var(--danger); }
+    .issue.serious { border-left-color: var(--warning); }
+    .issue.moderate { border-left-color: var(--primary); }
+    .issue-header { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+    .issue-rule { font-weight: 500; }
+    .badge {
+      font-size: 0.625rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .badge.critical { background: var(--danger); }
+    .badge.serious { background: var(--warning); color: #000; }
+    .badge.moderate { background: var(--primary); }
+    .badge.minor { background: var(--text-muted); }
+    .issue-desc { color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem; }
+    .issue-elements { font-family: monospace; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; }
+    .issue-elements code { background: var(--bg); padding: 0.125rem 0.375rem; border-radius: 3px; }
+    .empty { text-align: center; padding: 3rem; color: var(--success); }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>EVA Report</h1>
+    <p class="meta">Generated 2026-01-20, 3:31:29 p.m.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">1</div>
+        <div class="stat-label">States</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">7</div>
+        <div class="stat-label">Actions</div>
+      </div>
+      <div class="stat warning">
+        <div class="stat-value">10</div>
+        <div class="stat-label">Issues</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">119.5s</div>
+        <div class="stat-label">Duration</div>
+      </div>
+    </div>
+
+    
+
+    
+      <h2>Responsive Issues (10)</h2>
+      <div class="issues">
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: button</div>
+            <div class="issue-elements"><code>button</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: a</div>
+            <div class="issue-elements"><code>a</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: button</div>
+            <div class="issue-elements"><code>button</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: a</div>
+            <div class="issue-elements"><code>a</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: button</div>
+            <div class="issue-elements"><code>button</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: a</div>
+            <div class="issue-elements"><code>a</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: button</div>
+            <div class="issue-elements"><code>button</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: a</div>
+            <div class="issue-elements"><code>a</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: button</div>
+            <div class="issue-elements"><code>button</code></div>
+            
+          </div>
+        
+          <div class="issue minor">
+            <div class="issue-header">
+              <span class="issue-rule">element-out-of-bounds</span>
+              <span class="badge minor">minor</span>
+            </div>
+            <div class="issue-desc">Interactive element is far below fold: a</div>
+            <div class="issue-elements"><code>a</code></div>
+            
+          </div>
+        
+        
+      </div>
+    
+  </div>
+</body>
+</html>

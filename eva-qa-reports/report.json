@@ -1,0 +1,200 @@
+{
+  "summary": {
+    "statesExplored": 1,
+    "actionsPerformed": 7,
+    "issuesFound": 10,
+    "verificationsPassed": 0,
+    "verificationsFailed": 0,
+    "duration": 119527,
+    "coverage": {
+      "urlsCovered": [
+        "http://localhost:3000/"
+      ],
+      "actionsDiscovered": 0,
+      "actionsExecuted": 7,
+      "schemasMatched": 0
+    }
+  },
+  "issues": [
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: button",
+      "viewport": "desktop",
+      "elements": [
+        "button"
+      ],
+      "details": {
+        "position": {
+          "x": 183,
+          "y": 9034
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: a",
+      "viewport": "desktop",
+      "elements": [
+        "a"
+      ],
+      "details": {
+        "position": {
+          "x": 649,
+          "y": 9220
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: button",
+      "viewport": "desktop",
+      "elements": [
+        "button"
+      ],
+      "details": {
+        "position": {
+          "x": 183,
+          "y": 9112
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: a",
+      "viewport": "desktop",
+      "elements": [
+        "a"
+      ],
+      "details": {
+        "position": {
+          "x": 649,
+          "y": 9298
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: button",
+      "viewport": "desktop",
+      "elements": [
+        "button"
+      ],
+      "details": {
+        "position": {
+          "x": 183,
+          "y": 9189
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: a",
+      "viewport": "desktop",
+      "elements": [
+        "a"
+      ],
+      "details": {
+        "position": {
+          "x": 649,
+          "y": 9375
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: button",
+      "viewport": "desktop",
+      "elements": [
+        "button"
+      ],
+      "details": {
+        "position": {
+          "x": 183,
+          "y": 9267
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: a",
+      "viewport": "desktop",
+      "elements": [
+        "a"
+      ],
+      "details": {
+        "position": {
+          "x": 649,
+          "y": 9453
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: button",
+      "viewport": "desktop",
+      "elements": [
+        "button"
+      ],
+      "details": {
+        "position": {
+          "x": 183,
+          "y": 9345
+        },
+        "reason": "far below fold"
+      }
+    },
+    {
+      "type": "responsive",
+      "severity": "minor",
+      "rule": "element-out-of-bounds",
+      "description": "Interactive element is far below fold: a",
+      "viewport": "desktop",
+      "elements": [
+        "a"
+      ],
+      "details": {
+        "position": {
+          "x": 649,
+          "y": 9531
+        },
+        "reason": "far below fold"
+      }
+    }
+  ],
+  "verifications": [],
+  "states": [
+    {
+      "id": "aefbe4145cafb439",
+      "url": "http://localhost:3000/",
+      "title": "Swamp City Stompers | Southern Rock from the Bayou",
+      "viewport": "desktop",
+      "issueCount": 10
+    }
+  ]
+}

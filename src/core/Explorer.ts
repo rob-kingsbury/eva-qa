@@ -211,7 +211,17 @@ export class Explorer {
       contextOptions.storageState = this.config.auth
     }
 
+    // Add extra HTTP headers if provided (for --header flag)
+    if (this.config.extraHTTPHeaders) {
+      contextOptions.extraHTTPHeaders = this.config.extraHTTPHeaders
+    }
+
     this.context = await this.browser.newContext(contextOptions)
+
+    // Add cookies if provided (for --cookie flag)
+    if (this.config.cookies && this.config.cookies.length > 0) {
+      await this.context.addCookies(this.config.cookies)
+    }
 
     // Set up console and network error tracking
     this.context.on('console', (msg) => {

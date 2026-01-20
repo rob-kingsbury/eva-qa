@@ -542,6 +542,12 @@ export interface ExplorerConfig {
 
   /** Browser to use */
   browser?: 'chromium' | 'firefox' | 'webkit'
+
+  /** Cookies to set for authentication */
+  cookies?: Array<{ name: string; value: string; url: string }>
+
+  /** Extra HTTP headers to set for authentication */
+  extraHTTPHeaders?: Record<string, string>
 }
 
 // ============================================================================

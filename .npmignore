@@ -1,0 +1,47 @@
+# Source files (dist is published instead)
+src/
+
+# Tests
+dist/__tests__/
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+
+# Development files
+.git/
+.gitignore
+.github/
+.vscode/
+.idea/
+*.log
+.env
+.env.local
+.env.*
+
+# Design/planning docs (not needed by users)
+DESIGN.md
+CONTRIBUTING.md
+
+# Build configs
+tsconfig.json
+eslint.config.js
+vitest.config.*
+
+# Output artifacts
+reports/
+screenshots/
+*.mp4
+test-results/
+playwright/.auth/
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Lock file not needed for packages
+package-lock.json

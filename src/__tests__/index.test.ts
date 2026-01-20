@@ -49,6 +49,7 @@ describe('Module Exports', () => {
 
 describe('createConfig', () => {
   it('should require baseUrl', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(() => createConfig({} as any)).toThrow('baseUrl is required')
   })
 

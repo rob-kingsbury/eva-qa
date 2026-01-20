@@ -6,7 +6,7 @@
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { StateManager } from '../core/StateManager.js'
-import type { AppState, ViewportName } from '../core/types.js'
+import type { AppState } from '../core/types.js'
 
 // Mock Playwright Page
 function createMockPage(overrides: Partial<{
@@ -250,17 +250,6 @@ describe('StateManager', () => {
   })
 
   describe('cache operations', () => {
-    const mockState: AppState = {
-      id: 'test-state-1',
-      url: 'http://localhost:3000/test',
-      pathname: '/test',
-      title: 'Test',
-      domFingerprint: 'fp123',
-      modalOpen: null,
-      viewport: 'desktop',
-      timestamp: Date.now(),
-    }
-
     beforeEach(async () => {
       // Manually add to cache via captureState
       const mockPage = createMockPage({ url: 'http://localhost:3000/test' })
