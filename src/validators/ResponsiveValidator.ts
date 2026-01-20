@@ -162,6 +162,11 @@ export class ResponsiveValidator {
 
   /**
    * Check touch target sizes
+   *
+   * Uses smart detection to avoid false positives on:
+   * - Decorative elements (aria-hidden, role=presentation)
+   * - Icons inside larger clickable parents
+   * - Non-interactive elements (pointer-events: none)
    */
   private async checkTouchTargets(page: Page, viewport: ViewportName): Promise<Issue[]> {
     const issues: Issue[] = []
@@ -177,7 +182,46 @@ export class ResponsiveValidator {
         width: number
         height: number
         label: string
+        skipped?: string
       }> = []
+
+      /**
+       * Check if element should be skipped (decorative or inside larger target)
+       */
+      const shouldSkip = (el: Element): string | null => {
+        // 1. Decorative elements
+        if (el.getAttribute('aria-hidden') === 'true') return 'decorative (aria-hidden)'
+        if (el.getAttribute('role') === 'presentation') return 'decorative (role=presentation)'
+        if (el.getAttribute('role') === 'none') return 'decorative (role=none)'
+
+        // 2. Non-interactive (pointer-events: none)
+        const style = getComputedStyle(el)
+        if (style.pointerEvents === 'none') return 'non-interactive (pointer-events)'
+
+        // 3. Icon/element inside a larger clickable parent
+        // The parent provides the actual touch target
+        const clickableParent = el.parentElement?.closest('button, a, [role="button"]')
+        if (clickableParent && clickableParent !== el) {
+          const parentRect = clickableParent.getBoundingClientRect()
+          if (parentRect.width >= min && parentRect.height >= min) {
+            return 'inside adequate parent'
+          }
+        }
+
+        // 4. SVG or icon element that's a child of a button/link
+        // Common pattern: <button><svg>...</svg></button>
+        if (el.tagName === 'SVG' || el.tagName === 'svg') {
+          const parent = el.closest('button, a, [role="button"]')
+          if (parent) {
+            const parentRect = parent.getBoundingClientRect()
+            if (parentRect.width >= min && parentRect.height >= min) {
+              return 'svg inside adequate parent'
+            }
+          }
+        }
+
+        return null
+      }
 
       interactive.forEach((el) => {
         const htmlEl = el as HTMLElement
@@ -189,6 +233,10 @@ export class ResponsiveValidator {
 
         // Check if too small
         if (rect.width < min || rect.height < min) {
+          // Smart detection: check if this should be skipped
+          const skipReason = shouldSkip(el)
+          if (skipReason) return // Skip this element
+
           let selector = el.tagName.toLowerCase()
           if (el.id) selector = `#${el.id}`
           else if (el.getAttribute('data-testid')) {
