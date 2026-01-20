@@ -1,23 +1,24 @@
 #!/usr/bin/env node
 /**
- * UI Explorer CLI
+ * EVA - Explore, Validate, Analyze
  *
- * Simple, zero-config UI exploration with optional full-stack verification.
+ * Zero-config UI testing that crawls your app and finds accessibility,
+ * responsive, and functional issues.
  *
  * Quick Start:
- *   npx ui-explorer http://localhost:3000
+ *   npx eva-qa http://localhost:3000
  *
  * Preset Modes:
- *   npx ui-explorer quick http://localhost:3000   # Fast scan (3 depth, a11y + responsive)
- *   npx ui-explorer a11y http://localhost:3000    # Accessibility only
- *   npx ui-explorer responsive http://localhost:3000  # Responsive issues only
- *   npx ui-explorer full http://localhost:3000    # Full exploration with all checks
+ *   npx eva-qa quick http://localhost:3000       # Fast scan (3 depth, a11y + responsive)
+ *   npx eva-qa a11y http://localhost:3000        # Accessibility only
+ *   npx eva-qa responsive http://localhost:3000  # Responsive issues only
+ *   npx eva-qa full http://localhost:3000        # Full exploration with all checks
  *
  * With Authentication:
- *   npx ui-explorer http://localhost:3000 --auth ./auth.json
+ *   npx eva-qa http://localhost:3000 --auth ./auth.json
  *
  * With Database Verification:
- *   npx ui-explorer http://localhost:3000 --supabase-url $URL --supabase-key $KEY
+ *   npx eva-qa http://localhost:3000 --supabase-url $URL --supabase-key $KEY
  */
 
 import { program } from 'commander'
@@ -127,8 +128,8 @@ const PRESETS: Record<string, Preset> = {
 // =============================================================================
 
 program
-  .name('ui-explorer')
-  .description('Simple, zero-config UI exploration testing')
+  .name('eva-qa')
+  .description('EVA - Explore, Validate, Analyze. Zero-config UI testing.')
   .version(version)
 
 // Default command - just pass a URL
@@ -136,7 +137,7 @@ program
   .argument('[url]', 'URL to explore (default: http://localhost:3000)')
   .option('-m, --mode <preset>', 'Preset mode: quick, a11y, responsive, full', 'quick')
   .option('-a, --auth <path>', 'Playwright auth state file')
-  .option('-o, --output <dir>', 'Output directory', './ui-explorer-reports')
+  .option('-o, --output <dir>', 'Output directory', './eva-qa-reports')
   .option('--headless', 'Run in headless mode', true)
   .option('--no-headless', 'Show browser window')
   .option('--ci', 'CI mode - exit 1 on critical/serious issues')
@@ -156,7 +157,7 @@ program
   .command('quick [url]')
   .description('Quick scan - fast a11y + responsive check')
   .option('-a, --auth <path>', 'Playwright auth state file')
-  .option('-o, --output <dir>', 'Output directory', './ui-explorer-reports')
+  .option('-o, --output <dir>', 'Output directory', './eva-qa-reports')
   .option('--ci', 'CI mode')
   .action((url, options) => runExplorer(url, { ...options, mode: 'quick' }))
 
@@ -165,7 +166,7 @@ program
   .alias('accessibility')
   .description('Accessibility scan - WCAG 2.1 AA validation')
   .option('-a, --auth <path>', 'Playwright auth state file')
-  .option('-o, --output <dir>', 'Output directory', './ui-explorer-reports')
+  .option('-o, --output <dir>', 'Output directory', './eva-qa-reports')
   .option('--ci', 'CI mode')
   .action((url, options) => runExplorer(url, { ...options, mode: 'a11y' }))
 
@@ -173,7 +174,7 @@ program
   .command('responsive [url]')
   .description('Responsive check - overflow and touch targets')
   .option('-a, --auth <path>', 'Playwright auth state file')
-  .option('-o, --output <dir>', 'Output directory', './ui-explorer-reports')
+  .option('-o, --output <dir>', 'Output directory', './eva-qa-reports')
   .option('--ci', 'CI mode')
   .action((url, options) => runExplorer(url, { ...options, mode: 'responsive' }))
 
@@ -181,7 +182,7 @@ program
   .command('full [url]')
   .description('Full exploration - all validators, deep crawl')
   .option('-a, --auth <path>', 'Playwright auth state file')
-  .option('-o, --output <dir>', 'Output directory', './ui-explorer-reports')
+  .option('-o, --output <dir>', 'Output directory', './eva-qa-reports')
   .option('--supabase-url <url>', 'Enable Supabase verification')
   .option('--supabase-key <key>', 'Supabase service role key')
   .option('--ci', 'CI mode')
@@ -201,7 +202,7 @@ async function runExplorer(
 
     if (!options.quiet) {
       console.log()
-      console.log(chalk.bold.cyan('UI Explorer'), chalk.gray(`v${version}`))
+      console.log(chalk.bold.cyan('EVA'), chalk.gray(`v${version}`), chalk.gray('- Explore, Validate, Analyze'))
       console.log(chalk.gray('─'.repeat(50)))
       console.log(chalk.white('URL:'), baseUrl)
       console.log(chalk.white('Mode:'), `${preset.name} - ${preset.description}`)
@@ -304,7 +305,7 @@ async function runExplorer(
     }
 
     // Ensure output directory exists
-    const outputDir = config.output?.dir || './ui-explorer-reports'
+    const outputDir = config.output?.dir || './eva-qa-reports'
     if (!existsSync(outputDir)) {
       mkdirSync(outputDir, { recursive: true })
     }
@@ -518,7 +519,7 @@ function generateHtmlReport(result: import('./core/types.js').ExplorationResult)
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UI Explorer Report</title>
+  <title>EVA Report</title>
   <style>
     :root {
       --bg: #0f0f10;
@@ -594,7 +595,7 @@ function generateHtmlReport(result: import('./core/types.js').ExplorationResult)
 </head>
 <body>
   <div class="container">
-    <h1>UI Explorer Report</h1>
+    <h1>EVA Report</h1>
     <p class="meta">Generated ${new Date().toLocaleString()}</p>
 
     <div class="stats">

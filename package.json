@@ -1,12 +1,13 @@
 {
-  "name": "ui-explorer",
+  "name": "eva-qa",
   "version": "0.1.0",
-  "description": "Exhaustive UI exploration testing tool with accessibility and responsive validation",
+  "description": "EVA - Explore, Validate, Analyze. Zero-config UI testing that crawls your app and finds accessibility, responsive, and functional issues.",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "ui-explorer": "dist/cli.js"
+    "eva-qa": "dist/cli.js",
+    "eva": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -32,7 +33,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rob-kingsbury/ui-explorer.git"
+    "url": "https://github.com/rob-kingsbury/eva-qa.git"
+  },
+  "homepage": "https://github.com/rob-kingsbury/eva-qa#readme",
+  "bugs": {
+    "url": "https://github.com/rob-kingsbury/eva-qa/issues"
   },
   "engines": {
     "node": ">=18.0.0"

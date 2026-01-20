@@ -1,11 +1,12 @@
 /**
- * UI Explorer
+ * EVA - Explore, Validate, Analyze
  *
- * Exhaustive UI exploration with full-stack verification.
+ * Zero-config UI testing that crawls your app and finds accessibility,
+ * responsive, and functional issues.
  *
  * @example
  * ```typescript
- * import { Explorer, createConfig } from 'ui-explorer'
+ * import { Explorer, createConfig } from 'eva-qa'
  *
  * const config = createConfig({
  *   baseUrl: 'http://localhost:5173',
@@ -124,7 +125,7 @@ export function createConfig(config: Partial<import('./core/types.js').ExplorerC
     ignore: config.ignore || [],
     setup: config.setup,
     output: {
-      dir: './ui-explorer-reports',
+      dir: './eva-qa-reports',
       formats: ['html', 'json'],
       screenshots: true,
       screenshotFormat: 'png',
