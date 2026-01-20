@@ -104,6 +104,9 @@ npx eva-qa http://localhost:3000 --format html,json,junit
 
 # Test at different zoom levels (WCAG 2.1 requires 200% zoom support)
 npx eva-qa http://localhost:3000 --zoom "100,150,200"
+
+# Ignore specific accessibility rules (e.g., brand colors can't change)
+npx eva-qa http://localhost:3000 --ignore-rules "color-contrast,link-name"
 ```
 
 ## Zoom Level Testing

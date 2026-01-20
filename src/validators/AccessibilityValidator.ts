@@ -17,6 +17,8 @@ export interface AccessibilityValidatorConfig {
   exclude?: string[]
   /** Additional rules to disable */
   disableRules?: string[]
+  /** Axe rules to ignore (issues will be filtered out of results) */
+  ignoredRules?: string[]
   /** Only report issues at or above this severity */
   minSeverity?: IssueSeverity
 }
@@ -26,6 +28,7 @@ const DEFAULT_CONFIG: AccessibilityValidatorConfig = {
   rules: ['wcag21aa'],
   exclude: [],
   disableRules: [],
+  ignoredRules: [],
   minSeverity: 'minor',
 }
 
@@ -83,6 +86,11 @@ export class AccessibilityValidator {
 
       // Convert violations to issues
       for (const violation of results.violations) {
+        // Skip ignored rules
+        if (this.config.ignoredRules && this.config.ignoredRules.includes(violation.id)) {
+          continue
+        }
+
         const severity = IMPACT_TO_SEVERITY[violation.impact || 'minor'] || 'minor'
 
         // Filter by minimum severity

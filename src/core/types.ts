@@ -435,6 +435,8 @@ export interface ValidatorConfig {
     enabled: boolean
     rules?: string[]
     exclude?: string[]
+    /** Axe rules to ignore (e.g., 'color-contrast', 'link-name') */
+    ignoredRules?: string[]
   }
   responsive?: {
     enabled: boolean

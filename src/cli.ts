@@ -21,6 +21,24 @@
  *   npx eva-qa http://localhost:3000 --supabase-url $URL --supabase-key $KEY
  */
 
+// =============================================================================
+// Node Version Check (before any ES modules that might fail on old Node)
+// =============================================================================
+const MIN_NODE_VERSION = 18
+const currentVersion = parseInt(process.versions.node.split('.')[0], 10)
+
+if (currentVersion < MIN_NODE_VERSION) {
+  console.error('')
+  console.error(`\x1b[31mError: EVA requires Node.js ${MIN_NODE_VERSION} or higher.\x1b[0m`)
+  console.error(`You are running Node.js ${process.versions.node}.`)
+  console.error('')
+  console.error('To fix this:')
+  console.error('  1. Update Node.js: https://nodejs.org/')
+  console.error('  2. Or use nvm: nvm install 18 && nvm use 18')
+  console.error('')
+  process.exit(1)
+}
+
 import { program } from 'commander'
 import chalk from 'chalk'
 import { readFileSync, existsSync, mkdirSync, writeFileSync, readdirSync } from 'fs'
@@ -251,6 +269,7 @@ program
   .option('--header <header...>', 'Set headers for authentication (Name: value), can be repeated')
   .option('-f, --format <formats>', 'Output formats: html,json,junit (comma-separated)', 'html,json')
   .option('--score', 'Show compliance score in output')
+  .option('--ignore-rules <rules>', 'Axe rules to ignore (comma-separated, e.g., "color-contrast,link-name")')
   .option('-c, --config <path>', 'Path to JSON config file')
   .option('-q, --quiet', 'Minimal output')
   .option('-v, --verbose', 'Detailed output')
@@ -479,6 +498,9 @@ async function runExplorer(
         accessibility: {
           enabled: preset.validators.accessibility,
           rules: ['wcag21aa'],
+          ignoredRules: options.ignoreRules
+            ? (options.ignoreRules as string).split(',').map(r => r.trim())
+            : fileConfig.validators?.accessibility?.ignoredRules || [],
           ...fileConfig.validators?.accessibility,
         },
         responsive: {
@@ -1043,6 +1065,93 @@ function getUserImpact(rule: string): string | undefined {
   return USER_IMPACT_DESCRIPTIONS[rule]
 }
 
+/**
+ * Quick fix suggestions for common issues
+ */
+const QUICK_FIX_SUGGESTIONS: Record<string, string> = {
+  'image-alt': 'Add alt="" to decorative images, or descriptive alt text to meaningful images.',
+  'color-contrast': 'Increase text color darkness or background lightness to achieve 4.5:1 ratio.',
+  'button-name': 'Add text content, aria-label, or aria-labelledby to the button.',
+  'link-name': 'Add text content or aria-label to the link.',
+  'label': 'Add a <label> element with a "for" attribute matching the input id.',
+  'heading-order': 'Ensure headings follow a logical order (h1 → h2 → h3, no skipping).',
+  'touch-target-size': 'Increase button/link padding to ensure at least 44x44px touch area.',
+  'horizontal-overflow': 'Use max-width: 100% on images and overflow-x: hidden on containers.',
+}
+
+/**
+ * Generate Quick Wins section for overwhelmed users
+ */
+function generateQuickWinsSection(issues: Issue[]): string {
+  if (issues.length === 0) return ''
+
+  // Prioritize: critical first, then serious, then by commonality
+  const criticalSerious = issues.filter(i => i.severity === 'critical' || i.severity === 'serious')
+
+  // Group by rule and count
+  const ruleCount: Record<string, { count: number; issue: Issue }> = {}
+  for (const issue of criticalSerious) {
+    if (!ruleCount[issue.rule]) {
+      ruleCount[issue.rule] = { count: 0, issue }
+    }
+    ruleCount[issue.rule].count++
+  }
+
+  // Sort by impact (critical first) then count
+  const sortedRules = Object.entries(ruleCount)
+    .sort((a, b) => {
+      const severityOrder = { critical: 0, serious: 1, moderate: 2, minor: 3 }
+      const aSeverity = severityOrder[a[1].issue.severity]
+      const bSeverity = severityOrder[b[1].issue.severity]
+      if (aSeverity !== bSeverity) return aSeverity - bSeverity
+      return b[1].count - a[1].count
+    })
+    .slice(0, 5) // Top 5 quick wins
+
+  if (sortedRules.length === 0) {
+    // No critical/serious issues - show moderate ones
+    const moderate = issues.filter(i => i.severity === 'moderate').slice(0, 3)
+    if (moderate.length === 0) return ''
+
+    return `
+    <div class="quick-wins">
+      <h2>👍 Looking Good!</h2>
+      <p class="quick-wins-intro">No critical or serious issues found. Here are some optional improvements:</p>
+      ${moderate.map((issue, i) => `
+        <div class="quick-win">
+          <div class="quick-win-header">
+            <span class="quick-win-number">${i + 1}</span>
+            <span class="quick-win-title">${escapeHtml(issue.rule)}</span>
+          </div>
+          <div class="quick-win-desc">${escapeHtml(issue.description)}</div>
+        </div>
+      `).join('')}
+    </div>`
+  }
+
+  return `
+    <div class="quick-wins">
+      <h2>🎯 Start Here - Top ${sortedRules.length} Quick Wins</h2>
+      <p class="quick-wins-intro">Fix these first for the biggest impact. Each fix addresses multiple issues.</p>
+      ${sortedRules.map(([rule, data], i) => {
+        const fix = QUICK_FIX_SUGGESTIONS[rule] || 'See the help link for fix instructions.'
+        const userImpact = getUserImpact(rule)
+        return `
+        <div class="quick-win">
+          <div class="quick-win-header">
+            <span class="quick-win-number">${i + 1}</span>
+            <span class="quick-win-title">${escapeHtml(rule)}</span>
+            <span class="badge ${escapeHtml(data.issue.severity)}">${data.count} occurrence${data.count > 1 ? 's' : ''}</span>
+          </div>
+          <div class="quick-win-desc">
+            <strong>Fix:</strong> ${escapeHtml(fix)}
+            ${userImpact ? `<br><strong>Why:</strong> ${escapeHtml(userImpact)}` : ''}
+          </div>
+        </div>
+      `}).join('')}
+    </div>`
+}
+
 // =============================================================================
 // HTML Report Generator
 // =============================================================================
@@ -1170,6 +1279,45 @@ function generateHtmlReport(
     .empty { text-align: center; padding: 3rem; color: var(--success); }
     a { color: var(--primary); text-decoration: none; }
     a:hover { text-decoration: underline; }
+    .quick-wins {
+      background: linear-gradient(135deg, #3b82f622, #3b82f611);
+      border: 1px solid var(--primary);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .quick-wins h2 {
+      color: var(--primary);
+      margin: 0 0 1rem;
+      font-size: 1rem;
+    }
+    .quick-wins-intro {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+    .quick-win {
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .quick-win:last-child { margin-bottom: 0; }
+    .quick-win-header { display: flex; align-items: center; gap: 0.5rem; }
+    .quick-win-number {
+      background: var(--primary);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .quick-win-title { font-weight: 500; }
+    .quick-win-desc { color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
@@ -1211,6 +1359,8 @@ function generateHtmlReport(
     </div>
 
     ${issues.length === 0 ? '<div class="empty">✓ No issues found</div>' : ''}
+
+    ${generateQuickWinsSection(issues)}
 
     ${Object.entries(issuesByType)
       .map(
