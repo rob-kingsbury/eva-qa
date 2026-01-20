@@ -287,7 +287,7 @@ program
   .option('-f, --format <formats>', 'Output formats: html,json,junit')
   .option('--score', 'Show compliance score')
   .option('--ci', 'CI mode')
-  .action((url, options) => runExplorer(url, { ...options, mode: 'quick' }))
+  .action((url, options, command) => runExplorer(url, { ...command.optsWithGlobals(), mode: 'quick' }))
 
 program
   .command('a11y [url]')
@@ -301,7 +301,7 @@ program
   .option('-f, --format <formats>', 'Output formats: html,json,junit')
   .option('--score', 'Show compliance score')
   .option('--ci', 'CI mode')
-  .action((url, options) => runExplorer(url, { ...options, mode: 'a11y' }))
+  .action((url, options, command) => runExplorer(url, { ...command.optsWithGlobals(), mode: 'a11y' }))
 
 program
   .command('responsive [url]')
@@ -314,7 +314,7 @@ program
   .option('-f, --format <formats>', 'Output formats: html,json,junit')
   .option('--score', 'Show compliance score')
   .option('--ci', 'CI mode')
-  .action((url, options) => runExplorer(url, { ...options, mode: 'responsive' }))
+  .action((url, options, command) => runExplorer(url, { ...command.optsWithGlobals(), mode: 'responsive' }))
 
 program
   .command('full [url]')
@@ -327,7 +327,10 @@ program
   .option('-f, --format <formats>', 'Output formats: html,json,junit')
   .option('--score', 'Show compliance score')
   .option('--ci', 'CI mode')
-  .action((url, options) => runExplorer(url, { ...options, mode: 'full' }))
+  .action((url, options, command) => {
+    // Use optsWithGlobals() to include parent program options (like --auth)
+    runExplorer(url, { ...command.optsWithGlobals(), mode: 'full' })
+  })
 
 // =============================================================================
 // Baseline & Regression Tracking Commands
@@ -344,8 +347,8 @@ program
   .option('--timeout <ms>', 'Timeout in milliseconds')
   .option('-n, --name <name>', 'Name for this baseline (default: timestamp)')
   .option('-q, --quiet', 'Minimal output')
-  .action(async (url, options) => {
-    await runBaseline(url, options)
+  .action(async (url, options, command) => {
+    await runBaseline(url, command.optsWithGlobals())
   })
 
 program
@@ -360,8 +363,8 @@ program
   .option('-b, --baseline <name>', 'Baseline name to compare against (default: latest)')
   .option('--ci', 'CI mode - exit 1 on regressions')
   .option('-q, --quiet', 'Minimal output')
-  .action(async (url, options) => {
-    await runCompare(url, options)
+  .action(async (url, options, command) => {
+    await runCompare(url, command.optsWithGlobals())
   })
 
 program

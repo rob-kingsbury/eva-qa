@@ -262,6 +262,12 @@ export class Explorer {
         waitUntil: this.config.exploration?.waitForNetworkIdle ? 'networkidle' : 'load',
       })
 
+      // If auth state was provided, wait briefly for SPA auth to settle
+      // Some SPAs with localStorage auth need time to hydrate the auth state
+      if (this.config.auth) {
+        await page.waitForTimeout(500)
+      }
+
       // Replay path to reach this state
       await this.replayPath(page, task.path)
 

@@ -1,6 +1,6 @@
 {
   "name": "eva-qa",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "EVA - Explore, Validate, Analyze. Zero-config UI testing that crawls your app and finds accessibility, responsive, and functional issues.",
   "type": "module",
   "main": "dist/index.js",
